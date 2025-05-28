@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LeonsPremium - Cart</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ===== Reset & basics ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background-color: #f9fafb;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+    }
+
+    /* ===== Header ===== */
+    .header {
+      background-color: #fff;
+      padding: 15px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .header-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #007bff;
+      cursor: pointer;
+      user-select: none;
+    }
+    .search-bar {
+      flex-grow: 1;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border: 1.8px solid #ddd;
+      border-radius: 25px;
+      transition: border-color 0.3s ease;
+    }
+    .search-bar:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 8px #cce4ff;
+    }
+    .cart-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+    }
+    .cart-button:hover {
+      background-color: #0056b3;
+    }
+
+    /* ===== Main Content ===== */
+    main.main {
+      flex-grow: 1;
+      margin-top: 40px;
+      margin-bottom: 80px;
+    }
+    main h2 {
+      font-weight: 700;
+      font-size: 2rem;
+      color: #222;
+      margin-bottom: 30px;
+      text-align: center;
+      letter-spacing: 1.2px;
+    }
+
+    /* ===== Cart Items ===== */
+    .cart-items {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    @media(max-width: 720px) {
+      .cart-items {
+        grid-template-columns: 1fr;
+      }
+    }
+    .cart-item {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+      align-items: center;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .cart-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    }
+    .cart-item-img {
+      width: 130px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 12px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .cart-item-details {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .cart-item-details h3 {
+      font-size: 1.3rem;
+      color: #007bff;
+      margin-bottom: 6px;
+      font-weight: 700;
+      user-select: none;
+    }
+    .cart-item-details p {
+      font-size: 1rem;
+      color: #555;
+      margin: 3px 0;
+      user-select: text;
+    }
+    .quantity-control {
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .quantity-control label {
+      font-size: 0.9rem;
+      color: #666;
+    }
+    .quantity-control input[type="number"] {
+      width: 60px;
+      padding: 6px 10px;
+      font-size: 1rem;
+      border: 1.5px solid #ddd;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
+    }
+    .quantity-control input[type="number"]:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 6px #cce4ff;
+    }
+
+    /* ===== Cart Summary Box ===== */
+    .cart-summary {
+      background-color: #007bff;
+      color: #fff;
+      border-radius: 15px;
+      padding: 30px 40px;
+      max-width: 400px;
+      margin: 0 auto;
+      box-shadow: 0 10px 25px rgba(0, 123, 255, 0.3);
+      user-select: none;
+      text-align: center;
+    }
+    .cart-summary h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+    }
+    .cart-summary p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+    .cart-summary button {
+      background-color: #fff;
+      color: #007bff;
+      border: none;
+      padding: 14px 30px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .cart-summary button:hover {
+      background-color: #cce4ff;
+      color: #004085;
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background-color: #222;
+      color: #eee;
+      padding: 20px 0;
+      text-align: center;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo" onclick="location.href='index.html'">LeonsPremium</div>
+      <input type="text" class="search-bar" placeholder="Search for shoes..." />
+      <button class="cart-button" onclick="location.href='cart.html'">🛒 Cart (<span id="cart-count">3</span>)</button>
+    </div>
+  </header>
+
+  <main class="container main">
+    <h2>Your Shopping Cart</h2>
+
+    <div class="cart-items">
+      <div class="cart-item">
+        <img src="shoe1.jpg" alt="Men's Running Shoes" class="cart-item-img" />
+        <div class="cart-item-details">
+          <h3>Men's Running Shoes</h3>
+          <p>Price: ₹2,000</p>
+          <p>Color: Black</p>
+          <p>Size: 9 US</p>
+          <div class="quantity-control">
+            <label for="qty1">Quantity:</label>
+            <input type="number" id="qty1" min="1" max="10" value="1" />
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <img src="shoe2.jpg" alt="Casual Sneakers" class="cart-item-img" />
+        <div class="cart-item-details">
+          <h3>Casual Sneakers</h3>
+          <p>Price: ₹1,500</p>
+          <p>Color: White</p>
+          <p>Size: 8 US</p>
+          <div class="quantity-control">
+            <label for="qty2">Quantity:</label>
+            <input type="number" id="qty2" min="1" max="10" value="2" />
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <img src="shoe3.jpg" alt="Classic Loafers" class="cart-item-img" />
+        <div class="cart-item-details">
+          <h3>Classic Loafers</h3>
+          <p>Price: ₹3,000</p>
+          <p>Color: Brown</p>
+          <p>Size: 10 US</p>
+          <div class="quantity-control">
+            <label for="qty3">Quantity:</label>
+            <input type="number" id="qty3" min="1" max="10" value="1" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <h3>Total: ₹10,000</h3>
+            <p>Taxes and shipping included</p>
+      <button id="proceedBtn">Proceed to Checkout</button>
+    </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2025 LeonsPremium. All rights reserved.
+  </footer>
+
+  <script>
+    // Example: Proceed button pe click karne se address.html khulega
+    document.getElementById('proceedBtn').addEventListener('click', function() {
+      window.location.href = 'address.html';
+    });
+
+    // Quantity change hone par total update karna optional, agar chahiye toh code add kar sakte hain
+  </script>
+
+</body>
+</html>
