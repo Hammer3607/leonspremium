@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - LeonsPremium</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .confirmation-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .success-icon {
+            color: #28a745;
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-title {
+            color: #28a745;
+            margin-bottom: 1rem;
+        }
+
+        .order-details {
+            margin: 2rem 0;
+            text-align: left;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .order-details h3 {
+            color: #007bff;
+            margin-bottom: 1rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .detail-item strong {
+            color: #555;
+        }
+
+        .buttons {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .button {
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .primary-button {
+            background: #007bff;
+            color: white;
+        }
+
+        .primary-button:hover {
+            background: #0056b3;
+        }
+
+        .secondary-button {
+            background: #6c757d;
+            color: white;
+        }
+
+        .secondary-button:hover {
+            background: #5a6268;
+        }
+
+        @media (max-width: 768px) {
+            .confirmation-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .button {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">LeonsPremium</div>
+            <a href="shop.html" style="text-decoration: none; color: #007bff;">Continue Shopping</a>
+        </div>
+    </header>
+
+    <div class="confirmation-container">
+        <div class="success-icon">✓</div>
+        <h1 class="confirmation-title">Order Confirmed!</h1>
+        <p>Thank you for shopping with us. Your order has been successfully placed.</p>
+        
+        <div class="order-details" id="order-details">
+            <!-- Order details will be inserted here -->
+        </div>
+
+        <div class="buttons">
+            <a href="shop.html" class="button primary-button">Continue Shopping</a>
+            <a href="#" onclick="trackOrder()" class="button secondary-button">Track Order</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get order ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const orderId = urlParams.get('orderId');
+
+            // Get all orders from localStorage
+            const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+            const order = orders.find(o => o.orderId === orderId);
+
+            if (!order) {
+                window.location.href = 'shop.html';
+                return;
+            }
+
+            // Display order details
+            const orderDetails = document.getElementById('order-details');
+            orderDetails.innerHTML = `
+                <h3>Order Details</h3>
+                <div class="detail-item">
+                    <strong>Order ID:</strong>
+                    <span>${order.orderId}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Order Date:</strong>
+                    <span>${new Date(order.orderDate).toLocaleString()}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Shipping To:</strong>
+                    <span>${order.shipping.name}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Address:</strong>
+                    <span>${order.shipping.address}, ${order.shipping.city} - ${order.shipping.pincode}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Contact:</strong>
+                    <span>${order.shipping.phone}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Email:</strong>
+                    <span>${order.shipping.email}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Subtotal:</strong>
+                    <span>₹${order.subtotal.toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <strong>GST (18%):</strong>
+                    <span>₹${order.tax.toFixed(2)}</span>
+                </div>
+                <div class="detail-item" style="margin-top: 1rem; font-size: 1.2rem; font-weight: bold; color: #007bff;">
+                    <strong>Total Amount:</strong>
+                    <span>₹${order.total.toFixed(2)}</span>
+                </div>
+            `;
+        });
+
+        function trackOrder() {
+            alert('Order tracking will be available soon!');
+        }
+    </script>
+</body>
+</html> 
